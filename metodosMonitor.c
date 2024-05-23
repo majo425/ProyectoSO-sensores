@@ -1,14 +1,3 @@
-// #include <errno.h>
-// #include <fcntl.h>
-// #include <pthread.h>
-// #include <semaphore.h>
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
-// #include <sys/stat.h>
-// #include <sys/types.h>
-// #include <time.h>
-// #include <unistd.h>
 #include "metodosMonitor.h"
 
 /*--- Función para abrir un archivo de texto---*/
@@ -72,7 +61,7 @@ void *H_recolector(char *pipe_nominal) {
       } else {
         printf("\nTipo de sensor desconocido: %d\n", datosSensor.tipo_sensor);
       }
-    } else if (read(pipe, &datosSensor, sizeof(DatosSensor)) == sizeof(DatosSensor) == -1){
+    } else if ( read(pipe, &datosSensor, sizeof(DatosSensor)) == -1){
       perror("\nError al leer desde el pipe\n");
       break;
     }else{
