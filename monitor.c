@@ -53,7 +53,7 @@ FILE *abrirArchivo(char *archivo, char *modoApertura) {
 
 /*--- Función del hilo H-recolector ---*/
 void *H_recolector(char *pipe_nominal) {
-  // Crea el pipe si no existe
+  //Crea el pipe si no existe
   if (mkfifo(pipe_nominal, 0666) == -1) {
     if (errno != EEXIST) {
       perror("mkfifo");
@@ -100,19 +100,23 @@ void *H_recolector(char *pipe_nominal) {
       } else {
         printf("\nTipo de sensor desconocido: %d\n", datosSensor.tipo_sensor);
       }
-    } else {
+    } else if (read(pipe, &datosSensor, sizeof(DatosSensor)) == sizeof(DatosSensor) == -1){
       perror("\nError al leer desde el pipe\n");
       break;
+    }else{
+      // printf("\n Se ha leido toda la info:D\n");
+      continue;
     }
   }
-  if(close(pipe) == -1){ // Cerrar el pipe
-    perror("\nError al cerrar el pipe\n");
-  }else{
-    printf("\nSe cerro el pipe\n");
-  }
-  printf("\nHilo recolector ha finalizado.\n");
-  //sem_post(&recolector_finalizado); // Indicar que el recolector ha finalizado
-  return NULL;
+
+    if(close(pipe) == -1){ // Cerrar el pipe
+      perror("\nError al cerrar el pipe\n");
+    }else{
+      printf("\nSe cerro el pipe\n");
+    }
+    printf("\nHilo recolector ha finalizado.\n");
+    //sem_post(&recolector_finalizado); // Indicar que el recolector ha finalizado
+    return NULL;
 }
 
 /*--- Función del hilo H-ph ---*/
@@ -218,10 +222,11 @@ int main(int argc, char *argv[]){
   char *ph = args.arch_ph;
   char *pipe_nominal = args.pipe_nominal;
 
+  printf("\nMONITOR ACTIVO\n");
   printf("Tipo de Sensor: %d\n", buffer);
-  printf("Intervalo de Tiempo: %s\n", temp);
-  printf("Archivo: %s\n", ph);
-  printf("Pipe Nominal: %s\n", pipe_nominal);
+  printf("Archivo para Escribir la TEMP: %s\n", temp);
+  printf("Archivo para Escribir el PH: %s\n", ph);
+  printf("Nombre Pipe Nominal: %s\n", pipe_nominal);
 
   // Inicialización de semaforos
   sem_init(&buffer_mutex, 0, 1);

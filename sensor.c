@@ -51,8 +51,7 @@ int abrirPipe(char *pipe_nominal, int modoApertura) {
 }
 
 /*--- Función para simular la lectura de mediciones y enviarlas al monitor ---*/
-void simularSensor(int tipo_sensor, int tiempo, char *archivo,
-                   char *pipe_nominal) {
+void simularSensor(int tipo_sensor, int tiempo, char *archivo, char *pipe_nominal) {
   printf("\nIniciando simulación del sensor\n");
 
   int pipe = abrirPipe(pipe_nominal, O_WRONLY); // Abrir pipe en modo escritura
@@ -63,7 +62,8 @@ void simularSensor(int tipo_sensor, int tiempo, char *archivo,
   DatosSensor datos;
   datos.tipo_sensor = tipo_sensor;
 
-  while (fgets(buffer, BUFFERSIZE, archivo_leido) != NULL) { // Lectura del archivo
+  while (fgets(buffer, BUFFERSIZE, archivo_leido)) { // Lectura del archivo
+    
     datos.medicion = atof(buffer);
     printf("\nLectura del archivo: %.2f\n", datos.medicion);
 
@@ -71,6 +71,7 @@ void simularSensor(int tipo_sensor, int tiempo, char *archivo,
     write(pipe, &datos, sizeof(DatosSensor));
     sleep(tiempo); // Espera un tiempo
   }
+
   fclose(archivo_leido); // Cierre del archivo
   close(pipe);           // Cierre del pipe
   exit(EXIT_SUCCESS);
@@ -146,5 +147,6 @@ int main(int argc, char *argv[]) {
   for (int i = 0; i < argc - 1; i += 4) {
     wait(NULL);
   }
+
   return 0;
 }
