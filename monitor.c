@@ -1,5 +1,17 @@
+/*
+  TEMA: Simulacion del Monitoreo de Sensores por Mediante Programacion Paralela.
+  Autores:
+    * Maria José Cárdenas Machaca.
+    * Diego Alejandro Albarracin Maldonado.
+  Asignatura: Sistemas Operativos.
+  Fecha: Primer Semestre de 2024.
+  Universidad: Pontificia Universidad Javeriana.
+  Descripción: En este proyecto se realiza una simulacion del monitoreo de temperaturas a 
+  través de hilos de ejecución y procesos de manera concurrente. La comunicación se lográ por
+  medio de pipes nominales. El proyecto nos permitio a poner en práctica los conocimientos 
+  adquiridos durante el transcurso de la clase.
+*/
 #include "metodosMonitor.h"
-
 //Declaracion de Variables y semaforos.
 // /*--- Definción de semáforos para sincronización entre hilos ---*/
 sem_t buffer_mutex;

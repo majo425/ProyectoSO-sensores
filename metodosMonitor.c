@@ -1,5 +1,18 @@
-#include "metodosMonitor.h"
+/*
+  TEMA: Simulacion del Monitoreo de Sensores por Mediante Programacion Paralela.
+  Autores:
+    * Maria José Cárdenas Machaca.
+    * Diego Alejandro Albarracin Maldonado.
+  Asignatura: Sistemas Operativos.
+  Fecha: Primer Semestre de 2024.
+  Universidad: Pontificia Universidad Javeriana.
+  Descripción: En este proyecto se realiza una simulacion del monitoreo de temperaturas a 
+  través de hilos de ejecución y procesos de manera concurrente. La comunicación se lográ por
+  medio de pipes nominales. El proyecto nos permitio a poner en práctica los conocimientos 
+  adquiridos durante el transcurso de la clase.
+*/
 
+#include "metodosMonitor.h"
 /*--- Función para abrir un archivo de texto---*/
 FILE *abrirArchivo(char *archivo, char *modoApertura) {
   FILE *arch = fopen(archivo, modoApertura); // Apertura del archivo
@@ -11,7 +24,6 @@ FILE *abrirArchivo(char *archivo, char *modoApertura) {
     return arch; // Retorno del puntero del archivo abierto
   }
 }
-
 /*--- Función del hilo H-recolector ---*/
 void *H_recolector(char *pipe_nominal) {
   //Crea el pipe si no existe
@@ -79,7 +91,6 @@ void *H_recolector(char *pipe_nominal) {
     //sem_post(&recolector_finalizado); // Indicar que el recolector ha finalizado
     return NULL;
 }
-
 /*--- Función del hilo H-ph ---*/
 void *H_ph(char *arch_ph) {
   FILE *archivoPhFinal =
@@ -106,7 +117,6 @@ void *H_ph(char *arch_ph) {
   fclose(archivoPhFinal); // Cerrar el archivo de texto
   return NULL;
 }
-
 /*--- Función del hilo H-temperatura ---*/
 void *H_temperatura(char *arch_temperatura) {
   FILE *archivoTempFinal =
